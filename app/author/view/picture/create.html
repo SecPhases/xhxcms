@@ -1,0 +1,40 @@
+{extend name="pub/base" /}
+{block name="head"}
+<title>图片上传</title>
+<style>
+    #formBasForm {
+        max-width: 700px;
+        margin: 30px auto;
+    }
+
+    #formBasForm .layui-form-item {
+        margin-bottom: 25px;
+    }
+
+    img {
+        max-width:139px ;
+        height: auto;
+    }
+</style>
+{/block}
+{block name="main"}
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <!-- 表单开始 -->
+            <form class="layui-form" action="create" method="post" enctype="multipart/form-data">
+                <input type="hidden" value="{$chapter_id}" name="chapter_id">
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-form-required">图片上传:</label>
+                    <input type="file" multiple class="layui-input" name="pics[]" value="选择图片">
+                </div>
+
+                <div class="layui-form-item text-right">
+                    <input type="submit" class="layui-btn">
+                </div>
+            </form>
+            <!-- //表单结束 -->
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,115 @@
+{extend name="./template/default/m/pub/base.html" /}
+{block name="seo"}
+<title>漫画分类-{$site_name}</title>
+{/block}
+{block name="content"}
+{include file="./template/default/m/pub/top2.html" /}
+<div id="app">
+    <div class="manga-list-bar">
+        <a class="manga-list-bar-item {$end==-1?'active':''}" onclick="active(this)" data-val="-1">全部</a>
+        <a class="manga-list-bar-item {$end=='2'?'active':''}" onclick="active(this)" data-val="2">连载中</a>
+        <a class="manga-list-bar-item {$end=='1'?'active':''}" onclick="active(this)" data-val="1">已完结</a>
+        <a class="manga-list-bar-right " id="manga-list-bar-right">分类</a>
+        <div class="manga-list-bar-right-down" id="manga-list-bar-right-down" style="display:none;overflow-y: scroll;">
+            <a class="manga-list-bar-right-down-item {$cate=='全部'?'active':''}" onclick="active2(this)"
+               data-val="全部">全部</a>
+            {raccoon:cates name="cates" order="id desc"}
+            <div>
+                <a class="manga-list-bar-right-down-item {$cate==$vo.tag_name?'active':''}"
+                   onclick="active2(this)" data-val="{$vo.tag_name}">{$vo.tag_name}</a>
+            </div>
+            {/raccoon:cates}
+        </div>
+    </div>
+    <div class="manga-list" style="border:none;background-color:#f8f8f8;padding-top: 87px;">
+        <ul class="manga-list-2">
+            {raccoon:pagedbooks name="pagedBooks" pagesize="30" order="last_time desc"
+            where="tags like '%$cate%' and area_id='$area' and end='$end'"}
+            <li>
+                <div class="manga-list-2-cover">
+                    <a href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}">
+                        <img class="manga-list-2-cover-img" src="{$vo.cover_url}">
+                    </a>
+                </div>
+                <p class="manga-list-2-title">
+                    <a href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}">{$vo.book_name}</a>
+                </p>
+                <p class="manga-list-2-tip">
+                    {$vo.summary}
+                </p>
+            </li>
+            {/raccoon:pagedbooks}
+        </ul>
+    </div>
+    <ul class="pagination">
+        {if $page.last_page > 1}
+        {if $page.current_page == 1}
+        <li class="paginate_button page-item">
+            <a href="javascript:;" class="page-link">«</a>
+        </li>
+        {else/}
+        <li class="paginate_button page-item">
+            <a href="/{$booklist_act}?page={$page.current_page-1}{$param}" class="page-link">«</a>
+        </li>
+        {/if}
+
+        {for start="1" end="$page.last_page + 1"}
+        {if $i == $page.current_page }
+        <li class="paginate_button page-item active">
+            <a href="/{$booklist_act}?page={$i}{$param}"  class="page-link">{$i}</a>
+        </li>
+        {elseif ($i > $page.current_page - 4 && $i < $page.current_page + 5)/}
+        <li class="paginate_button page-item">
+            <a href="/{$booklist_act}?page={$i}{$param}"  class="page-link">{$i}</a>
+        </li>
+        {/if}
+        {/for}
+
+        {if $page.current_page == $page.last_page}
+        <li class="paginate_button page-item">
+            <a href="javascript:;" class="page-link">»</a>
+        </li>
+        {else/}
+        <li class="paginate_button page-item">
+            <a href="/{$booklist_act}?page={$page.current_page+1}{$param}" class="page-link">»</a>
+        </li>
+        {/if}
+        {/if}
+    </ul>
+</div>
+
+<div class="toast" style="display:none;"></div>
+<script>
+    $(function () {
+        $("#manga-list-bar-right").click(function () {
+            if ($("#manga-list-bar-right-down").is(":hidden")) {
+                $("#manga-list-bar-right-down").show();
+            } else {
+                $("#manga-list-bar-right-down").hide();
+            }
+        });
+    });
+
+    function active(item) {
+        $(item).siblings().removeClass('active');
+        $(item).addClass('active');
+        var cate = $('#manga-list-bar-right-down a.active').attr('data-val');
+        var end = $('a.manga-list-bar-item.active').attr('data-val');
+
+        location.href = '/{$booklist_act}?cate=' + cate + '&end=' + end;
+    }
+
+    function active2(item) {
+        var list = $('.manga-list-bar-right-down-item');
+        list.each(function () {
+            $(this).removeClass('active');
+        })
+        $(item).addClass('active');
+        var cate = $('#manga-list-bar-right-down a.active').attr('data-val');
+        var end = $('a.manga-list-bar-item.active').attr('data-val');
+
+        location.href = '/{$booklist_act}?cate=' + cate + '&end=' + end;
+    }
+</script>
+{include file="./template/default/m/pub/return_top.html"}
+{/block}

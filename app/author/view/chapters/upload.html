@@ -1,0 +1,40 @@
+{extend name="pub/base" /}
+{block name="head"}
+<title>章节上传</title>
+<style>
+    #formBasForm {
+        max-width: 700px;
+        margin: 30px auto;
+    }
+
+    #formBasForm .layui-form-item {
+        margin-bottom: 25px;
+    }
+
+    img {
+        max-width:139px ;
+        height: auto;
+    }
+</style>
+{/block}
+{block name="main"}
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <!-- 表单开始 -->
+            <form class="layui-form" action="upload" method="post" enctype="multipart/form-data">
+                <input type="hidden" value="{$book_id}" name="book_id">
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-form-required">章节上传:</label>
+                    <input type="file" multiple class="layui-input" name="file" value="选择文件">
+                </div>
+
+                <div class="layui-form-item text-right">
+                    <input type="submit" class="layui-btn">
+                </div>
+            </form>
+            <!-- //表单结束 -->
+        </div>
+    </div>
+</div>
+{/block}

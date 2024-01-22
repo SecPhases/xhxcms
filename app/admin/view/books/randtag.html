@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>随机分类</title>
+</head>
+<body>
+    <p>等待一秒开始执行，当前页数是{$page}</p>
+<script>
+    setInterval(function () {
+        window.location.href = '{:adminurl("books/randtag2")}?page={$page}'
+    }, 1000)
+</script>
+</body>
+</html>
